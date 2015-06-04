@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app",
-    "postinstall": "gulp default"
+    "build": "gulp",
+    "start": "node src/index.js"
   },
   "author": "Avraam Mavridis <avr.mav@gmail.com> (https://github.com/AvraamMavridis/gulp-louis)",
   "license": "ISC",
@@ -41,5 +41,8 @@
     "scrap": "^0.1.0",
     "walk": "^2.3.9",
     "winston": "^1.0.0"
+  },
+  "dependencies": {
+    "gulp": "^3.9.0"
   }
 }
