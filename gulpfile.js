@@ -4,8 +4,12 @@ var gulp = require('gulp');
 var nodemon = require('nodemon');
 var jshint = require('gulp-jshint');
 var watch = require('gulp-watch');
-var connect = require('gulp-connect');
 
+
+// Restart the server for changes.
+gulp.task('nodemon', function () {
+    nodemon({ script: 'src/index.js', ext: 'js', 'execMap': { 'h': '--harmony'} });
+});
 
 // watch for changes and run the relevant task
 gulp.task('watch', function () {
@@ -16,21 +20,13 @@ gulp.task('watch', function () {
   });
 });
 
-gulp.task('serveprod', function() {
-  connect.server({
-    root: 'src/index.js',
-    port: process.env.PORT || 5000, // localhost:5000
-    livereload: false
-  });
-});
 
 
 gulp.task('default', [
     'lint',
-    'serveprod',
+    'nodemon',
     'watch'
 ]);
-
 
 
 gulp.task('lint', function() {

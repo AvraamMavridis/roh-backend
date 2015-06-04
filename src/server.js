@@ -9,8 +9,7 @@ var articlesRoutes = require('./routes/articlesRoutes');
 var server = new Hapi.Server();
 
 server.connection({
-    host: 'localhost',
-    port: 8001,
+    port: process.env.PORT || 8001,
     routes: {
       cors: true
     }
