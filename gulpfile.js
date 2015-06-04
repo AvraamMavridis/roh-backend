@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var nodemon = require('nodemon');
 var jshint = require('gulp-jshint');
 var watch = require('gulp-watch');
-
+var connect = require('gulp-connect');
 
 
 // watch for changes and run the relevant task
