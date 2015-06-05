@@ -10,7 +10,7 @@ var NewsObject = require('../models/NewsObject');
 
 /** Configuration of Controller **/
 var config = {
-  url: 'http://www.protothema.gr/',
+  url: 'https://www.protothema.gr/',
   latestNewsSelector: '.scrollflow > .content .viewport ul li ul li',
 };
 
@@ -23,6 +23,7 @@ function _getLatestNews(){
 
   ScrapService.getLatestNewsNodes(config.url, config.latestNewsSelector)
               .then(function(results){
+                  console.log('>>>>>>>>>>>>>>>>>>>>>>',results);
                   var newsNodes = results.newsNodes;
                   var $ = cheerio.load(newsNodes);
                   for(var i = 0; i<5; ++i){
