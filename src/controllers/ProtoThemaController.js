@@ -21,6 +21,8 @@ function _getLatestNews(){
   var deferred = q.defer();
   var latestNews = [];
 
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>PROTO>>>>>>>>>>>>>>>');
+
   ScrapService.getLatestNewsNodes(config.url, config.latestNewsSelector)
               .then(function(results){
                   console.log('>>>>>>>>>>>>>>>>>>>>>>',results);
