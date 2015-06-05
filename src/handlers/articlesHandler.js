@@ -1,5 +1,5 @@
 // External Dependencies
-var Boom = require('Boom');
+var Boom = require('boom');
 
 /** Internal dependencies **/
 var Article = require('../models/Article');
