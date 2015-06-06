@@ -63,16 +63,27 @@ function _parseSources(sources){
  * @return {promise} a promise that when will be resolved it will return the htmlNodes
  *
  */
-function _getLatestNewsFromAllTheWebsites(){
+function _getLatestNewsFromAllTheWebsites(website){
 
   var ctrlPromises = [];
 
   return Walker.walkControllersFolder()
         .then(function(controllersNames){
-            ctrlPromises = _.map(controllersNames,function(name){
+
+            if(_.isUndefined(website)){
+              ctrlPromises = _.map(controllersNames,function(name){
+                var ctrl = require(name);
+                return ctrl.getLatestNews();
+              });
+            }
+            else {
+              var name = _.find(controllersNames, function(name){
+                return website === _.last(name.split('/')).replace('Controller.js','');
+              });
               var ctrl = require(name);
-              return ctrl.getLatestNews();
-            });
+              ctrlPromises = ctrl.getLatestNews();
+            }
+
 
             return Promise.settle(ctrlPromises)
                           .then(function(results){
@@ -97,34 +108,6 @@ function _getLatestNewsFromAllTheWebsites(){
         });
 }
 
-/*
- * Returns the news from a website
- *
- * @param {string} The website name uppercase
- * @return {promise} a promise that when will be resolved it will return the htmlNodes
- *
- */
-function _getLatestNewsFromOneWebsite(website){
-  var ctrl = require(process.env.PWD + '/src/controllers/' + website + 'Controller.js');
-
-  return new Promise(function(resolve, reject){
-    if(_.isUndefined(ctrl)){
-      var msg = 'Unable to require ../controllers/' + website + 'Controller';
-      return reject(msg);
-    }
-    else{
-      ctrl.getLatestNews()
-          .then(function(listOfNews){
-            listOfNews = _.flatten(listOfNews);
-            listOfNews = _parseNews(listOfNews);
-            listOfNews = _sortNews(listOfNews);
-            listOfNews = _hashNews(listOfNews);
-            console.log(listOfNews);
-            return resolve(listOfNews);
-          });
-    }
-  });
-}
 
 function _getListOfNewsSources(){
   return new Promise(function(resolve, reject){
@@ -144,6 +127,6 @@ Public module
 ***************/
 module.exports = {
   getLatestNewsFromAllTheWebsites: _getLatestNewsFromAllTheWebsites,
-  getLatestNewsFromOneWebsite:     _getLatestNewsFromOneWebsite,
+  getLatestNewsFromOneWebsite:     _getLatestNewsFromAllTheWebsites,
   getListOfNewsSources:            _getListOfNewsSources
 };
