@@ -105,8 +105,9 @@ function _getLatestNewsFromAllTheWebsites(){
  *
  */
 function _getLatestNewsFromOneWebsite(website){
+  var ctrl  = null;
   return new Promise(function(resolve, reject){
-    var ctrl = require('../controllers/' + website + 'Controller');
+    ctrl = require('../controllers/' + website + 'Controller');
     if(_.isUndefined(ctrl)){
       var msg = 'Unable to require ../controllers/' + website + 'Controller';
       logger.error(msg);
