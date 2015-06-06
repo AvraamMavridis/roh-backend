@@ -1,1 +1,1 @@
-web: node src/index.js
+web: heroku run node src/index.js
