@@ -23,6 +23,7 @@ function newsRoutes(server){
         else {
           NewsAggregatorService.getLatestNewsFromOneWebsite(site)
             .then(function(data){
+              console.log('>>>>>',data);
               winston.info('News retrieved');
               reply(data);
             })

@@ -105,12 +105,13 @@ function _getLatestNewsFromAllTheWebsites(){
  *
  */
 function _getLatestNewsFromOneWebsite(website){
-  var ctrl  = null;
+  var ctrl = require('../controllers/' + website + 'Controller');
+  console.log('>>>>>',ctrl.toString());
+
   return new Promise(function(resolve, reject){
-    ctrl = require('../controllers/' + website + 'Controller');
     if(_.isUndefined(ctrl)){
       var msg = 'Unable to require ../controllers/' + website + 'Controller';
-      return Promise.reject(msg);
+      return reject(msg);
     }
     else{
       ctrl.getLatestNews()
@@ -119,7 +120,8 @@ function _getLatestNewsFromOneWebsite(website){
             listOfNews = _parseNews(listOfNews);
             listOfNews = _sortNews(listOfNews);
             listOfNews = _hashNews(listOfNews);
-            return Promise.resolve(listOfNews);
+            console.log(listOfNews);
+            return resolve(listOfNews);
           });
     }
   });
