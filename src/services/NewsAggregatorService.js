@@ -4,8 +4,6 @@
 var _ = require('lodash');
 var moment = require('moment');
 var Promise = require('bluebird');
-var winston = require('winston');
-var logger = new winston.Logger();
 var md5 = require('crypto-md5');
 
 
