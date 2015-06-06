@@ -105,8 +105,7 @@ function _getLatestNewsFromAllTheWebsites(){
  *
  */
 function _getLatestNewsFromOneWebsite(website){
-  var ctrl = require('../controllers/' + website + 'Controller');
-  console.log('>>>>>',ctrl.toString());
+  var ctrl = require(process.env.PWD + '/src/controllers/' + website + 'Controller.js');
 
   return new Promise(function(resolve, reject){
     if(_.isUndefined(ctrl)){
