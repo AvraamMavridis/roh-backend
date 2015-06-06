@@ -110,8 +110,7 @@ function _getLatestNewsFromOneWebsite(website){
     ctrl = require('../controllers/' + website + 'Controller');
     if(_.isUndefined(ctrl)){
       var msg = 'Unable to require ../controllers/' + website + 'Controller';
-      logger.error(msg);
-      return reject(msg);
+      return Promise.reject(msg);
     }
     else{
       ctrl.getLatestNews()
@@ -120,7 +119,7 @@ function _getLatestNewsFromOneWebsite(website){
             listOfNews = _parseNews(listOfNews);
             listOfNews = _sortNews(listOfNews);
             listOfNews = _hashNews(listOfNews);
-            return resolve(listOfNews);
+            return Promise.resolve(listOfNews);
           });
     }
   });
@@ -131,7 +130,7 @@ function _getListOfNewsSources(){
     Walker.walkControllersFolder()
           .then(function(listOfNewsSources){
             listOfNewsSources = _parseSources(listOfNewsSources);
-            resolve(listOfNewsSources);
+            Promise.resolve(listOfNewsSources);
           })
           .catch(function(error){
             reject(error);
