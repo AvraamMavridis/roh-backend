@@ -23,7 +23,7 @@ function newsRoutes(server){
         else {
           NewsAggregatorService.getLatestNewsFromAllTheWebsites(site)
             .then(function(data){
-              reply({data : 10});
+              reply(data);
             })
             .catch(function(error){
               reply(error);

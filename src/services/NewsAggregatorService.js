@@ -97,6 +97,7 @@ function _getLatestNewsFromAllTheWebsites(website){
                           });
         })
         .then(function(listOfNews){
+          console.log(listOfNews);
           listOfNews = _.flatten(listOfNews);
           listOfNews = _parseNews(listOfNews);
           listOfNews = _sortNews(listOfNews);
@@ -104,7 +105,7 @@ function _getLatestNewsFromAllTheWebsites(website){
           return Promise.resolve(listOfNews);
         })
         .catch(function(error){
-          logger.log(error);
+          return Promise.reject(error);
         });
 }
 
