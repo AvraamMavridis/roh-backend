@@ -72,8 +72,13 @@ function _getLatestNewsFromAllTheWebsites(website){
 
              ctrlPromises = _.map(controllersNames,function(name){
                 if(website){
-                  var ctrl = require(name);
-                  return ctrl.getLatestNews();
+                  if(name.indexOf(website) > -1){
+                    var ctrl = require(name);
+                    return ctrl.getLatestNews();
+                  }
+                  else{
+                    return Promise.resolve([]);
+                  }
                 }
                 else{
                   var ctrl = require(name);
