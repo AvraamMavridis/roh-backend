@@ -25,8 +25,8 @@ function newsRoutes(server){
             .then(function(data){
               reply({data : 10});
             })
-            .catch(function(){
-              reply([]);
+            .catch(function(error){
+              reply(error);
             });
         }
 
