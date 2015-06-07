@@ -70,20 +70,17 @@ function _getLatestNewsFromAllTheWebsites(website){
   return Walker.walkControllersFolder()
         .then(function(controllersNames){
 
-            if(_.isUndefined(website)){
-              ctrlPromises = _.map(controllersNames,function(name){
-                var ctrl = require(name);
-                return ctrl.getLatestNews();
-              });
-            }
-            else {
-              var name = _.find(controllersNames, function(name){
-                return website === _.last(name.split('/')).replace('Controller.js','');
-              });
-              var ctrl = require('../controllers/enikosController.js');
-              ctrlPromises = ctrl.getLatestNews();
-            }
+             ctrlPromises = _.map(controllersNames,function(name){
+                if(website){
+                  var ctrl = require(name);
+                  return ctrl.getLatestNews();
+                }
+                else{
+                  var ctrl = require(name);
+                  return ctrl.getLatestNews();
+                }
 
+              });
 
             return Promise.settle(ctrlPromises)
                           .then(function(results){
