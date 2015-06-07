@@ -21,11 +21,9 @@ function newsRoutes(server){
             });
         }
         else {
-          NewsAggregatorService.getLatestNewsFromOneWebsite(site)
+          NewsAggregatorService.getLatestNewsFromAllTheWebsites(site)
             .then(function(data){
-              console.log('>>>>>',data);
-              winston.info('News retrieved');
-              reply(data);
+              reply({data : 10});
             })
             .catch(function(){
               reply([]);
