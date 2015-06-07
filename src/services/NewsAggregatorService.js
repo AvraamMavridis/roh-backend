@@ -80,7 +80,7 @@ function _getLatestNewsFromAllTheWebsites(website){
               var name = _.find(controllersNames, function(name){
                 return website === _.last(name.split('/')).replace('Controller.js','');
               });
-              var ctrl = require(name);
+              var ctrl = require('../controllers/enikosController.js');
               ctrlPromises = ctrl.getLatestNews();
             }
 
