@@ -77,7 +77,7 @@ function _getLatestNewsFromAllTheWebsites(website){
                     return ctrl.getLatestNews();
                   }
                   else{
-                    return Promise.resolve([]);
+                    return null
                   }
                 }
                 else{
