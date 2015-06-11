@@ -92,7 +92,7 @@ function _getLatestNewsFromAllTheWebsites(website){
                           .then(function(results){
                                 var news = [];
                                 for(var i = 0; i < results.length; i++){
-                                      news.push(results[i].value());
+                                      news.push(results[i]);
                               }
                               return news;
                           }).catch(function(error){
