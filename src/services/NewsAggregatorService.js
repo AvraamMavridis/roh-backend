@@ -90,7 +90,7 @@ function _getLatestNewsFromAllTheWebsites(website){
 
             return Promise.settle(ctrlPromises)
                           .then(function(results){
-                                var news = [{},{},{}];
+                                var news = [results];
                                 for(var i = 0; i < results.length; i++){
                                     if(results[i].isFulfilled()){
                                       news.push(results[i].value());
