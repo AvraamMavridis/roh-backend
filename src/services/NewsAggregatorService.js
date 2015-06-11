@@ -22,11 +22,12 @@ Private functions
  *
  */
 function _parseNews(news){
+
   return _.map(news, function(n){
     moment.locale('el');
-    n.time = moment(n.time,'HH:mm');
+    n.time = moment(n.time || 0,'HH:mm');
     n.displayTime = moment(n.time).format('dddd, HH:mm a');
-    n.date = moment(n.time).toDate().getTime();
+    n.date = 10; //moment(n.time).toDate().getTime();
     return n;
   });
 }
@@ -99,7 +100,7 @@ function _getLatestNewsFromAllTheWebsites(website){
                           });
         })
         .then(function(listOfNews){
-          console.log(listOfNews);
+          listOfNews = _.compact(listOfNews);
           listOfNews = _.flatten(listOfNews);
           listOfNews = _parseNews(listOfNews);
           listOfNews = _sortNews(listOfNews);
