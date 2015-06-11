@@ -27,14 +27,14 @@ function _parseNews(news){
     moment.locale('el');
     n.time = moment(n.time || 0,'HH:mm');
     n.displayTime = moment(n.time).format('dddd, HH:mm a');
-    n.date = 10; //moment(n.time).toDate().getTime();
+    n.date = moment(n.time).toDate().getTime();
     return n;
   });
 }
 
 function _hashNews(news){
   return _.map(news, function(n){
-    n.hash = md5(n.title + n.link + n.source);
+    n.hash = md5(JSON.stringify(n.title + n.link + n.source));
     return n;
   })
 }
