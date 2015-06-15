@@ -85,12 +85,12 @@ function _getLatestNewsFromAllTheWebsites(website){
 
           }
 
-          return ctrlPromises;
+          return website;
 
         })
         .then(function(ctrlPromises){
           //ctrlPromises = _.compact(ctrlPromises);
-          return Promise.all(ctrlPromises);
+          return website
         })
         .then(function(dt){
           //var listOfNews = _.compact(data);
