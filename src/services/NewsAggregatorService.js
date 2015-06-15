@@ -71,36 +71,32 @@ function _getLatestNewsFromAllTheWebsites(website){
   return Walker.walkControllersFolder()
         .then(function(controllersNames){
 
-             ctrlPromises = _.map(controllersNames,function(name){
-                if(website){
-                  if(name.indexOf(website) > -1){
-                    var ctrl = require(name);
-                    return ctrl.getLatestNews();
-                  }
-                  else{
-                    return null
-                  }
-                }
-                else{
-                  var ctrl = require(name);
-                  return ctrl.getLatestNews();
-                }
+         ctrlPromises = _.map(controllersNames,function(name){
+            if(website){
+              if(name.indexOf(website) > -1){
+                var ctrl = require(name);
+                return ctrl.getLatestNews();
+              }
+              else{
+                return null
+              }
+            }
+            else{
+              var ctrl = require(name);
+              return ctrl.getLatestNews();
+            }
 
-              });
+          });
 
-            return Promise.all(ctrlPromises)
-                          .then(function(results){
-                                var news = [];
-                                for(var i = 0; i < results.length; i++){
-                                      news.push(results[i]);
-                              }
-                              return news;
-                          }).catch(function(error){
-                            Promise.reject(error);
-                          });
+            return Promise.resolve(ctrlPromises);
+
         })
-        .then(function(listOfNews){
-          listOfNews = _.compact(listOfNews);
+        .then(function(ctrlPromises){
+          ctrlPromises = _.compact(ctrlPromises);
+          return Promise.all(ctrlPromises);
+        })
+        .then(function(data){
+          var listOfNews = _.compact(data);
           listOfNews = _.flatten(listOfNews);
           listOfNews = _parseNews(listOfNews);
           listOfNews = _sortNews(listOfNews);
