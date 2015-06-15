@@ -66,42 +66,29 @@ function _parseSources(sources){
  */
 function _getLatestNewsFromAllTheWebsites(website){
 
-  var ctrlPromises = [];
-
   return Walker.walkControllersFolder()
         .then(function(controllersNames){
 
-         ctrlPromises = _.map(controllersNames,function(name){
-            if(website){
-              if(name.indexOf(website) > -1){
-                var ctrl = require(name);
-                return ctrl.getLatestNews();
-              }
-              else{
-                return null
-              }
-            }
-            else{
-              var ctrl = require(name);
-              return ctrl.getLatestNews();
-            }
+          var ctrlPromises = [];
+          for(var i = 0; i<controllersNames.length; i++){
+            var ctrl = require(controllersNames[i]);
+            ctrlPromises.push(ctrl.getLatestNews());
+          }
 
-          });
-
-            return Promise.resolve(ctrlPromises);
+          return controllersNames.concat(ctrlPromises);
 
         })
         .then(function(ctrlPromises){
           ctrlPromises = _.compact(ctrlPromises);
-          return Promise.all(ctrlPromises);
+          return ctrlPromises;
         })
-        .then(function(data){
-          var listOfNews = _.compact(data);
-          listOfNews = _.flatten(listOfNews);
-          listOfNews = _parseNews(listOfNews);
-          listOfNews = _sortNews(listOfNews);
-          listOfNews = _hashNews(listOfNews);
-          return Promise.resolve(listOfNews);
+        .then(function(dt){
+          //var listOfNews = _.compact(data);
+          //listOfNews = _.flatten(listOfNews);
+          //listOfNews = _parseNews(listOfNews);
+          //listOfNews = _sortNews(listOfNews);
+          //listOfNews = _hashNews(listOfNews);
+          return dt;
         })
         .catch(function(error){
           return Promise.reject(error);
