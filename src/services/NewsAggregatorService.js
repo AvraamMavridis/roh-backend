@@ -85,7 +85,7 @@ function _getLatestNewsFromAllTheWebsites(website){
 
           }
 
-          return controllersNames.concat(website);
+          return Promise.all(ctrlPromises);
 
         })
         .then(function(ctrlPromises){
