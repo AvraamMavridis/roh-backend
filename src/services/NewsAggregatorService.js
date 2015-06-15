@@ -96,12 +96,12 @@ function _getLatestNewsFromAllTheWebsites(website){
           return Promise.all(ctrlPromises);
         })
         .then(function(data){
-          var listOfNews = _.compact(data);
-          listOfNews = _.flatten(listOfNews);
-          listOfNews = _parseNews(listOfNews);
-          listOfNews = _sortNews(listOfNews);
-          listOfNews = _hashNews(listOfNews);
-          return Promise.resolve(listOfNews);
+          //var listOfNews = _.compact(data);
+          //listOfNews = _.flatten(listOfNews);
+          //listOfNews = _parseNews(listOfNews);
+          //listOfNews = _sortNews(listOfNews);
+          //listOfNews = _hashNews(listOfNews);
+          return Promise.resolve(data);
         })
         .catch(function(error){
           return Promise.reject(error);
