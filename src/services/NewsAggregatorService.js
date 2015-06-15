@@ -71,16 +71,25 @@ function _getLatestNewsFromAllTheWebsites(website){
 
           var ctrlPromises = [];
           for(var i = 0; i<controllersNames.length; i++){
-            var ctrl = require(controllersNames[i]);
-            ctrlPromises.push(ctrl.getLatestNews());
+            if(!!website){
+              if(controllersNames[i].indexOf(website) > -1){
+                var ctrl = require(controllersNames[i]);
+                ctrlPromises.push(ctrl.getLatestNews());
+              }
+            }
+            else{
+              var ctrl = require(controllersNames[i]);
+              ctrlPromises.push(ctrl.getLatestNews());
+            }
+
           }
 
-          return controllersNames.concat(ctrlPromises);
+          return ctrlPromises;
 
         })
         .then(function(ctrlPromises){
           ctrlPromises = _.compact(ctrlPromises);
-          return ctrlPromises;
+          return Promise.all(ctrlPromises);
         })
         .then(function(dt){
           //var listOfNews = _.compact(data);
