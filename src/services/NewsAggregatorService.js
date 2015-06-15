@@ -69,24 +69,13 @@ function _getLatestNewsFromAllTheWebsites(website){
   return Walker.walkControllersFolder()
         .then(function(controllersNames){
 
-         var ctrlPromises = _.map(controllersNames,function(name){
-            if(!!website){
-              if(name.indexOf(website) > -1){
-                var ctrl = require(name);
-                return ctrl.getLatestNews();
-              }
-              else{
-                return '';
-              }
-            }
-            else{
-              var ctrl = require(name);
-              return ctrl.getLatestNews();
-            }
+          var ctrlPromises = [];
+          for(var i = 0; i<controllersNames.length; i++){
+            var ctrl = require(controllersNames[i]);
+            ctrlPromises.push(ctrl.getLatestNews());
+          }
 
-          });
-
-            return controllersNames.concat(ctrlPromises);
+          return controllersNames.concat(ctrlPromises);
 
         })
         .then(function(ctrlPromises){
