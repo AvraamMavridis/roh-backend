@@ -66,19 +66,17 @@ function _parseSources(sources){
  */
 function _getLatestNewsFromAllTheWebsites(website){
 
-  var ctrlPromises = [];
-
   return Walker.walkControllersFolder()
         .then(function(controllersNames){
 
-         ctrlPromises = _.map(controllersNames,function(name){
-            if(website){
+         var ctrlPromises = _.map(controllersNames,function(name){
+            if(!!website){
               if(name.indexOf(website) > -1){
                 var ctrl = require(name);
                 return ctrl.getLatestNews();
               }
               else{
-                return null
+                return '';
               }
             }
             else{
@@ -88,12 +86,12 @@ function _getLatestNewsFromAllTheWebsites(website){
 
           });
 
-            return controllersNames;
+            return controllersNames.concat(ctrlPromises);
 
         })
         .then(function(ctrlPromises){
           ctrlPromises = _.compact(ctrlPromises);
-          return ctrlPromises.length;
+          return ctrlPromises;
         })
         .then(function(dt){
           //var listOfNews = _.compact(data);
