@@ -88,12 +88,12 @@ function _getLatestNewsFromAllTheWebsites(website){
 
           });
 
-            return Promise.resolve(ctrlPromises);
+            return ctrlPromises;
 
         })
         .then(function(ctrlPromises){
           ctrlPromises = _.compact(ctrlPromises);
-          return ctrlPromises[0];
+          return ctrlPromises.length;
         })
         .then(function(dt){
           //var listOfNews = _.compact(data);
@@ -101,7 +101,7 @@ function _getLatestNewsFromAllTheWebsites(website){
           //listOfNews = _parseNews(listOfNews);
           //listOfNews = _sortNews(listOfNews);
           //listOfNews = _hashNews(listOfNews);
-          return _.isEmpty(dt);
+          return dt;
         })
         .catch(function(error){
           return Promise.reject(error);
