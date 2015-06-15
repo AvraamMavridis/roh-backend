@@ -101,7 +101,7 @@ function _getLatestNewsFromAllTheWebsites(website){
           //listOfNews = _parseNews(listOfNews);
           //listOfNews = _sortNews(listOfNews);
           //listOfNews = _hashNews(listOfNews);
-          return Promise.resolve('dt');
+          return Promise.resolve(_.isEmpty(dt));
         })
         .catch(function(error){
           return Promise.reject(error);
