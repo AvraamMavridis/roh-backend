@@ -95,13 +95,13 @@ function _getLatestNewsFromAllTheWebsites(website){
           ctrlPromises = _.compact(ctrlPromises);
           return Promise.all(ctrlPromises);
         })
-        .then(function(data){
+        .then(function(dt){
           //var listOfNews = _.compact(data);
           //listOfNews = _.flatten(listOfNews);
           //listOfNews = _parseNews(listOfNews);
           //listOfNews = _sortNews(listOfNews);
           //listOfNews = _hashNews(listOfNews);
-          return Promise.resolve(data);
+          return Promise.resolve(dt);
         })
         .catch(function(error){
           return Promise.reject(error);
