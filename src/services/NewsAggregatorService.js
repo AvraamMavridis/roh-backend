@@ -90,7 +90,7 @@ function _getLatestNewsFromAllTheWebsites(website){
         })
         .then(function(ctrlPromises){
           //ctrlPromises = _.compact(ctrlPromises);
-          return website
+          return ctrlPromises
         })
         .then(function(dt){
           //var listOfNews = _.compact(data);
