@@ -71,8 +71,8 @@ function _getLatestNewsFromAllTheWebsites(website){
 
           var ctrlPromises = [];
           for(var i = 0; i<controllersNames.length; i++){
-            if(true){
-              if(controllersNames[i].indexOf(website) > -1){
+            if(!!website){
+              if(controllersNames[i]){
                 var ctrl = require(controllersNames[i]);
                 ctrlPromises.push(ctrl.getLatestNews());
               }
