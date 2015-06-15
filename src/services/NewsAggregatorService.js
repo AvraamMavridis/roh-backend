@@ -71,8 +71,9 @@ function _getLatestNewsFromAllTheWebsites(website){
 
           var ctrlPromises = [];
           for(var i = 0; i<controllersNames.length; i++){
-            if(!!website){
-              if(true){
+            if(website){
+              var p = controllersNames[i].replace(/\.\.\/controllers\/|Controller\.js/g,'')
+              if(p == website){
                 var ctrl = require(controllersNames[i]);
                 ctrlPromises.push(ctrl.getLatestNews());
               }
@@ -88,7 +89,7 @@ function _getLatestNewsFromAllTheWebsites(website){
 
         })
         .then(function(ctrlPromises){
-          ctrlPromises = _.compact(ctrlPromises);
+          //ctrlPromises = _.compact(ctrlPromises);
           return Promise.all(ctrlPromises);
         })
         .then(function(dt){
