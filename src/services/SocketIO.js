@@ -2,23 +2,21 @@
 
 
 /** Internal dependencies **/
-var NewsAggregatorService = require('../services/NewsAggregatorService');
+
 var server = require('../server.js');
+var socket = null;
+var NewsAggregatorService = require('../services/NewsAggregatorService');
+
 
 var io = require('socket.io')(server.info.port);
 
 io.on('connection', function(socket){
-  console.log('a user connected');
 
   setInterval(function(){
-    NewsAggregatorService.getLatestNewsFromAllTheWebsites()
-      .then(function(data){
-        socket.emit('news arrived', data);
-      });
-      console.log('News for socket: ', socket.id);
+    NewsAggregatorService.getLatestNewsFromAllTheWebsites(socket);
   }, 3000);
 
 });
 
 
-module.export = {}
+module.export = socket

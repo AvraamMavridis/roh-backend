@@ -1,8 +1,9 @@
 'use strict';
 
 var server = require('./server');
-var Socket = require('./services/SocketIO');
 var winston = require('winston');
+
+var socketIO = require('./services/SocketIO')
 
 server.start(function (err) {
   winston.info(server.info.uri);

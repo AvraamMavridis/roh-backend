@@ -24,10 +24,9 @@ Private functions
 function _parseNews(news){
 
   return _.map(news, function(n){
-    moment.locale('el');
-    n.time = moment(n.time || 0,'HH:mm');
-    n.displayTime = moment(n.time).format('dddd, HH:mm a');
-    n.date = moment(n.time).toDate().getTime();
+    n.time = n.moment.format('DD-MM-YYYY HH:mm');
+    n.displayTime = n.moment.format('HH:mm');
+    n.date = n.moment.toDate();
     return n;
   });
 }
@@ -39,20 +38,6 @@ function _hashNews(news){
   })
 }
 
-/*
- * Sort news by time
- *
- * @param {array} Array of news items
- * @return {array} a promise that when will be resolved it will return the htmlNodes
- *
- */
-function _sortNews(news){
-  var sortedNews =  news.sort(function(a, b) {
-    return a.date - b.date;
-  });
-
-  return sortedNews;
-}
 
 function _parseSources(sources){
   return _.map(sources, function(source){ return source.replace(/Controller|..\/controllers\/|.js|/g,'').toLowerCase();})
@@ -64,41 +49,25 @@ function _parseSources(sources){
  * @return {promise} a promise that when will be resolved it will return the htmlNodes
  *
  */
-function _getLatestNewsFromAllTheWebsites(website){
+function _getLatestNewsFromAllTheWebsites(socket){
 
   return Walker.walkControllersFolder()
         .then(function(controllersNames){
 
           var ctrlPromises = [];
           for(var i = 0; i<controllersNames.length; i++){
-            if(website){
-              var p = controllersNames[i].toLowerCase();
-              if(_.contains(p, website)){
-                var ctrl = require(controllersNames[i]);
-                ctrlPromises.push(ctrl.getLatestNews());
-              }
+            var ctrl = require(controllersNames[i]);
+              ctrl.getLatestNews()
+                  .then(function(listOfNews){
+                    listOfNews = _.compact(listOfNews);
+                    listOfNews = _.flatten(listOfNews);
+                    listOfNews = _parseNews(listOfNews);
+                    listOfNews = _hashNews(listOfNews);
+                    socket.emit('news arrived', listOfNews);
+                  })
+
             }
-            else{
-              var ctrl = require(controllersNames[i]);
-              ctrlPromises.push(ctrl.getLatestNews());
-            }
 
-          }
-
-          return Promise.all(ctrlPromises);
-
-        })
-        .then(function(ctrlPromises){
-          ctrlPromises = _.compact(ctrlPromises);
-          return ctrlPromises
-        })
-        .then(function(listOfNews){
-          listOfNews = _.compact(listOfNews);
-          listOfNews = _.flatten(listOfNews);
-          listOfNews = _parseNews(listOfNews);
-          listOfNews = _sortNews(listOfNews);
-          listOfNews = _hashNews(listOfNews);
-          return listOfNews;
         })
         .catch(function(error){
           return Promise.reject(error);

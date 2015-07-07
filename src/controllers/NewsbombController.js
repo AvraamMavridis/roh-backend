@@ -4,6 +4,8 @@
 var Xray = require('x-ray');
 var x = Xray();
 var Promise = require('bluebird');
+var _ = require('lodash');
+var moment = require('moment');
 
 /********
 Private functions
@@ -16,10 +18,25 @@ function _getLatestNews(){
       [{
         title: '.story-title a',
         link: '.story-title a@href',
-        time: '.story-date .time'
+        time: '.story-date .time',
+        image: 'img@src',
+        description: '.story-intro'
       }])(function(err, result){
         if(err) reject(err)
-        else resolve(result)
+        else{
+          result = _.map(result, function(res){
+            var hour = res.time;
+            var date = moment().get('date') + ' ' + (moment().get('month') + 1) + ' ' + moment().get('year');
+            var mom = moment(date + ' ' + hour, 'DD-MM-YYYY HH:mm');
+            res.moment = mom;
+            res.source = 'newsbomb';
+            res.description = res.description.trim();
+            res.type = "Πολιτική";
+            delete res.time;
+            return res;
+          });
+          resolve(result);
+        }
       });
   });
 

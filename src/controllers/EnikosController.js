@@ -4,6 +4,8 @@
 var Xray = require('x-ray');
 var x = Xray();
 var Promise = require('bluebird');
+var _ = require('lodash');
+var moment = require('moment');
 
 /***************
 Private functions
@@ -15,10 +17,27 @@ function _getLatestNews(){
         [{
           title: '.title h2 a',
           link: '.title h2 a@href',
-          time: '.hour'
+          time: '.hour',
+          image: 'img@src',
+          description: '.text > p > a'
         }])(function(err, result){
           if(err) reject(err)
-          else resolve(result)
+          else{
+            result = _.map(result, function(res){
+                var hour = res.time.slice(0,5);
+                var date = moment().get('date') + ' ' + (moment().get('month') + 1) + ' ' + moment().get('year');
+                var mom = moment(date + ' ' + hour, 'DD-MM-YYYY HH:mm');
+                res.moment = mom;
+                res.source = 'enikos';
+                if(!_.isUndefined(res.description)){
+                  res.description = res.description.split('\n')[0];
+                }
+                res.type = "Πολιτική";
+                delete res.time;
+                return res;
+              });
+            resolve(result);
+          }
         });
     });
 }

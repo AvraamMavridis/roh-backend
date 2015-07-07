@@ -1,9 +1,6 @@
 var Hapi = require('hapi');
 var winston = require('winston');
 var logger = new winston.Logger();
-var newsRoutes = require('./routes/newsRoutes');
-var tokenRoutes = require('./routes/tokenRoutes');
-var articlesRoutes = require('./routes/articlesRoutes');
 
 // Create a server with a host and port
 var server = new Hapi.Server();
@@ -51,8 +48,5 @@ server.register([
     }
 });
 
-newsRoutes(server);
-tokenRoutes(server);
-articlesRoutes(server);
 
 module.exports = server;
