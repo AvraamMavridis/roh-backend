@@ -11,10 +11,9 @@ var NewsAggregatorService = require('../services/NewsAggregatorService');
 
 var io = require('socket.io')(server.info.port);
 
-io.configure(function () {
-  io.set("transports", ["xhr-polling"]);
-  io.set("polling duration", 10);
-});
+
+io.set("transports", ["xhr-polling"]);
+io.set("polling duration", 10);
 
 io.on('connection', function(socket){
 
