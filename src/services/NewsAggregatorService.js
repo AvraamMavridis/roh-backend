@@ -64,7 +64,7 @@ function _getLatestNewsFromAllTheWebsites(socket){
                     listOfNews = _parseNews(listOfNews);
                     listOfNews = _hashNews(listOfNews);
                     socket.emit('news arrived', listOfNews);
-                  })
+                  });
 
             }
 

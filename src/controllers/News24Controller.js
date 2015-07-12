@@ -34,7 +34,7 @@ function _getLatestNews(){
               res.source = 'news247';
               res.title = res.title.trim();
               res.description = res.description.trim();
-              res.type = "Πολιτική";
+              res.type = "ΠΟΛΙΤΙΚΗ";
               delete res.time;
               return res;
             });

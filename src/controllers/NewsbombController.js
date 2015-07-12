@@ -31,7 +31,7 @@ function _getLatestNews(){
             res.moment = mom;
             res.source = 'newsbomb';
             res.description = res.description.trim();
-            res.type = "Πολιτική";
+            res.type = "ΠΟΛΙΤΙΚΗ";
             delete res.time;
             return res;
           });

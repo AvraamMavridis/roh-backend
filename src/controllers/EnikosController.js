@@ -32,7 +32,7 @@ function _getLatestNews(){
                 if(!_.isUndefined(res.description)){
                   res.description = res.description.split('\n')[0];
                 }
-                res.type = "Πολιτική";
+                res.type = "ΠΟΛΙΤΙΚΗ";
                 delete res.time;
                 return res;
               });
