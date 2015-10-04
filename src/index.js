@@ -1,15 +1,20 @@
 'use strict';
 
-var server = require('./server');
 var winston = require('winston');
+var db = require('./database');
 
-var socketIO = require('./services/SocketIO')
+var NewsAggregatorService = require('./services/NewsAggregatorService');
 
-server.start(function (err) {
-  winston.info(server.info.uri);
-  //winston.log(err);
-});
+db.connect()
+  .then(function(){
+    setInterval(function(){
+      NewsAggregatorService.getLatestNewsFromAllTheWebsites()
+        .then(function(data){
+          console.log(Date.now() + ' articles saved.');
+        });
+    }, 6000)
 
-process.on('uncaughtException', function (exception) {
-   console.log(exception);
-});
+  })
+  .catch(function(err){
+    console.log('err');
+  })

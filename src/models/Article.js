@@ -1,33 +1,40 @@
+'use strict';
+
 /** External dependencies **/
 var winston = require('winston');
 var Promise = require('bluebird');
-
-/** Internal dependencies **/
-var db = require('../database');
-var Schema = db.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var _ = require('lodash');
 
 // Define article Schema
 var articleSchema = new Schema({
-  title:  { type: String, required: true},
-  link:   { type: String, required: true},
-  time:   { type: String, required: true},
-  source: { type: String, required: true},
-  date:   { type: Date, default: Date.now },
-  summary: { type: Date, default: '' },
-  imageUrl: { type: Date, default: '' },
-  hash:   { type: String, required: true},
-  username: { type: String, default: '' }
+  title:  { type: String, required : true, unique: true, dropDups: true },
+  link:   { type: String, required : true },
+  description:   { type: String, required : true },
+  image: { type: String },
+  moment: { type: String },
+  source: { type: String },
+  time: { type: Date, default: Date.now() }
 });
 
 // Define article model
 function Article(){
-  var _Article = db.model('_Article', articleSchema);
-
+  var _Article = mongoose.model('_Article', articleSchema);
   this.create = function(article){
+
+    article.moment = JSON.stringify(article.moment);
+
     return new Promise(function(resolve, reject){
       _Article.create(article,function(err, data){
-        if(err){ reject(err);}
-        else{ resolve(data);}
+        if(err){
+          console.error('Failed to save article');
+          reject(err);
+        }
+        else{
+          console.info('Article saved');
+          resolve(data);
+        }
       });
     });
   }

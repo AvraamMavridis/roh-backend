@@ -31,7 +31,6 @@ function _getLatestNews(){
             res.moment = mom;
             delete res.time;
             res.source = 'skai';
-            res.type = "ΠΟΛΙΤΙΚΗ";
             return res;
           });
           resolve(result);

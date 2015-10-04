@@ -5,10 +5,8 @@ var _ = require('lodash');
 var moment = require('moment');
 var Promise = require('bluebird');
 var md5 = require('crypto-md5');
-
-
-/** Internal dependencies **/
-var Walker = require('./ControllersLookupService');
+var fs = require('fs');
+var Article = require('../models/Article');
 
 /***************
 Private functions
@@ -49,43 +47,29 @@ function _parseSources(sources){
  * @return {promise} a promise that when will be resolved it will return the htmlNodes
  *
  */
-function _getLatestNewsFromAllTheWebsites(socket){
+function _getLatestNewsFromAllTheWebsites(){
+    let controllersNames = fs.readdirSync('./controllers/').map( (name) => `../controllers/${name}` );
+    let newsPromises = [];
 
-  return Walker.walkControllersFolder()
-        .then(function(controllersNames){
+    for(var i = 0; i<controllersNames.length; i++){
+       let ctrl = require(controllersNames[i]);
+       newsPromises.push(ctrl.getLatestNews());
+    }
 
-          var ctrlPromises = [];
-          for(var i = 0; i<controllersNames.length; i++){
-            var ctrl = require(controllersNames[i]);
-              ctrl.getLatestNews()
-                  .then(function(listOfNews){
-                    listOfNews = _.compact(listOfNews);
-                    listOfNews = _.flatten(listOfNews);
-                    listOfNews = _parseNews(listOfNews);
-                    listOfNews = _hashNews(listOfNews);
-                    socket.emit('news arrived', listOfNews);
-                  });
 
+    return Promise.settle(newsPromises).then(function(results){
+        for(var i = 0; i < results.length; i++){
+            if(results[i].isFulfilled()){
+              _.map(results[i].value(), Article.create)
             }
+        }
+    });
 
-        })
-        .catch(function(error){
-          return Promise.reject(error);
-        });
 }
 
 
 function _getListOfNewsSources(){
-  return new Promise(function(resolve, reject){
-    Walker.walkControllersFolder()
-          .then(function(listOfNewsSources){
-            listOfNewsSources = _parseSources(listOfNewsSources);
-            Promise.resolve(listOfNewsSources);
-          })
-          .catch(function(error){
-            reject(error);
-          });
-  })
+  return fs.readdirSync('./controllers/').map( (name) => name.replace('Controller','') );
 }
 
 /***************
@@ -93,6 +77,5 @@ Public module
 ***************/
 module.exports = {
   getLatestNewsFromAllTheWebsites: _getLatestNewsFromAllTheWebsites,
-  getLatestNewsFromOneWebsite:     _getLatestNewsFromAllTheWebsites,
   getListOfNewsSources:            _getListOfNewsSources
 };

@@ -1,9 +1,0 @@
-{
-    "dev": {
-    "host": "localhost",
-    "user": { "ENV" : "DB_USER" },
-    "password" : { "ENV" : "DB_PASS" },
-    "database": "roheidiseon",
-    "driver": "mongodb"
-  }
-}

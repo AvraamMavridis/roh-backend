@@ -21,13 +21,11 @@ gulp.task('watch', function () {
 });
 
 
-
 gulp.task('default', [
     'lint',
     'nodemon',
     'watch'
 ]);
-
 
 gulp.task('lint', function() {
   return gulp.src('src/**/*.js')

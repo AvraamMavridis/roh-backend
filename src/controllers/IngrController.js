@@ -28,7 +28,6 @@ function _getLatestNews(){
             var mom = moment(res.time, 'DD-MM-YYYY HH:mm');
             res.moment = mom;
             res.source = 'in';
-            res.type = "ΠΟΛΙΤΙΚΗ";
             delete res.time;
             return res;
           });

@@ -1,14 +1,29 @@
+'use strict';
+
 var mongoose = require('mongoose');
-var winston = require('winston');
-var logger = new winston.Logger();
+var Promise = require('bluebird');
 
-// mongoose.connect('mongodb://localhost/users');
-// var db = mongoose.connection;
-//
-// db.on('error', console.error.bind(console, 'connection error:'));
-//
-// db.once('open', function () {
-//   console.log('Connection to the database established.')
-// });
+var connection = mongoose.connection;
 
-module.exports = mongoose;
+
+class Database{
+
+  constructor(){}
+
+  static connect(){
+    mongoose.connect('mongodb://root:12345678@ds029224.mongolab.com:29224/results');
+    return new Promise(function(resolve, reject){
+      connection.once('open', function(data){
+         console.info('Connection to the database established.');
+         resolve('Connection to the database established.')
+      });
+
+      connection.on('error', function(error){
+        console.error('Connection to the database failed.');
+        reject(error)
+      });
+    });
+  }
+}
+
+module.exports = Database;

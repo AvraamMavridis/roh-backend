@@ -30,7 +30,6 @@ function _getLatestNews(){
             var mom = moment(date + ' ' + hour, 'DD-MM-YYYY HH:mm');
             res.moment = mom;
             delete res.time;
-            res.type = "ΠΟΛΙΤΙΚΗ";
             res.source = 'protothema';
             return res;
           });
