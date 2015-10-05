@@ -21,10 +21,19 @@ var articleSchema = new Schema({
 // Define article model
 function Article(){
   var _Article = mongoose.model('_Article', articleSchema);
+
+  this.find = function(){
+
+    return new Promise(function(resolve, reject){
+      _Article.find({}, function(err, articles){
+        resolve(articles);
+      });
+    });
+
+  }
+
   this.create = function(article){
-
     article.moment = JSON.stringify(article.moment);
-
     return new Promise(function(resolve, reject){
       _Article.create(article,function(err, data){
         if(err){
