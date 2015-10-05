@@ -10,14 +10,12 @@ var NewsAggregatorService = require('./services/NewsAggregatorService');
 db.connect()
   .then(function(){
     setInterval(function(){
-      NewsAggregatorService.getLatestNewsFromAllTheWebsites()
+      NewsAggregatorService.getLatestArticlesFromAllTheWebsites()
         .then(function(data){
           console.log(Date.now() + ' articles saved.');
         });
-    }, 60000)
+    }, 6000)
 
     server.start(console.info.bind(console, `Server running at: ${server.info.uri}`))
   })
-  .catch(function(err){
-    console.log('err');
-  })
+  .catch(console.err);

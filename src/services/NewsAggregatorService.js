@@ -13,15 +13,15 @@ Private functions
 ***************/
 
 /*
- * Parse newsItems
+ * Parse ArticlesItems
  *
- * @param {array} Array of news items
+ * @param {array} Array of Articles items
  * @return {array} a promise that when will be resolved it will return the htmlNodes
  *
  */
-function _parseNews(news){
+function _parseArticles(articles){
 
-  return _.map(news, function(n){
+  return _.map(articles, function(n){
     n.time = n.moment.format('DD-MM-YYYY HH:mm');
     n.displayTime = n.moment.format('HH:mm');
     n.date = n.moment.toDate();
@@ -29,8 +29,8 @@ function _parseNews(news){
   });
 }
 
-function _hashNews(news){
-  return _.map(news, function(n){
+function _hashArticles(articles){
+  return _.map(articles, function(n){
     n.hash = md5(JSON.stringify(n.title + n.link + n.source));
     return n;
   })
@@ -42,25 +42,26 @@ function _parseSources(sources){
 }
 
 /*
- * Aggregates and returns the news for all the websites
+ * Aggregates and returns the Articles for all the websites
  *
  * @return {promise} a promise that when will be resolved it will return the htmlNodes
  *
  */
-function _getLatestNewsFromAllTheWebsites(){
+function _getLatestArticlesFromAllTheWebsites(){
     let controllersNames = fs.readdirSync('./controllers/').map( (name) => `../controllers/${name}` );
-    let newsPromises = [];
+    let articlesPromises = [];
 
-    for(var i = 0; i<controllersNames.length; i++){
+    for(var i = 0; i< controllersNames.length; i++){
        let ctrl = require(controllersNames[i]);
-       newsPromises.push(ctrl.getLatestNews());
+       articlesPromises.push(ctrl.getLatestNews());
     }
 
 
-    return Promise.settle(newsPromises).then(function(results){
+    return Promise.settle(articlesPromises).then(function(results){
         for(var i = 0; i < results.length; i++){
             if(results[i].isFulfilled()){
-              _.map(results[i].value(), Article.create)
+              let arts = _hashArticles(results[i].value())
+              _.map(arts, Article.create)
             }
         }
     });
@@ -68,7 +69,7 @@ function _getLatestNewsFromAllTheWebsites(){
 }
 
 
-function _getListOfNewsSources(){
+function _getListOfArticlesSources(){
   return fs.readdirSync('./controllers/').map( (name) => name.replace('Controller','') );
 }
 
@@ -76,6 +77,6 @@ function _getListOfNewsSources(){
 Public module
 ***************/
 module.exports = {
-  getLatestNewsFromAllTheWebsites: _getLatestNewsFromAllTheWebsites,
-  getListOfNewsSources:            _getListOfNewsSources
+  getLatestArticlesFromAllTheWebsites: _getLatestArticlesFromAllTheWebsites,
+  getListOfArticlesSources:            _getListOfArticlesSources
 };

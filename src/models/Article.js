@@ -9,7 +9,8 @@ var _ = require('lodash');
 
 // Define article Schema
 var articleSchema = new Schema({
-  title:  { type: String, required : true, unique: true, dropDups: true },
+  hash:   { type: String, required : true, unique: true, dropDups: true },
+  title:  { type: String, required : true },
   link:   { type: String, required : true },
   description:   { type: String, required : true },
   image: { type: String },
